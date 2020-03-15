@@ -18,6 +18,5 @@ fn main() {
 }
 
 fn transpose(mat: &Matrix) -> Matrix {
-    let transposed = Matrix(mat.0, mat.2, mat.1, mat.3);
-    transposed
+    Matrix(mat.0, mat.2, mat.1, mat.3)
 }
