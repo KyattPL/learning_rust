@@ -6,7 +6,7 @@ use queue::Queue;
 use rand::prelude::*;
 
 fn main() {
-    let mut v = generate_processes(1000);
+    let mut v = generate_processes(1000000);
 
     let iterations = fcfs(&mut v);
     println!("Number of iterations: {}", iterations);
@@ -16,10 +16,9 @@ fn main() {
 fn generate_processes(mut num_of_processes: i32) -> Vec<Process> {
     let mut processes: Vec<Process> = vec![];
     let mut rng = thread_rng();
-    let max = num_of_processes;
     while num_of_processes != 0 {
-        let temp_time = rng.gen_range(10, 50);
-        processes.push(Process::new(temp_time, max - num_of_processes));
+        let temp_time = rng.gen_range(5, 50);
+        processes.push(Process::new(temp_time));
         num_of_processes -= 1;
     }
     processes
@@ -43,9 +42,12 @@ fn fcfs(processes: &mut Vec<Process>) -> i32 {
     let mut process_no: i32 = 1;
 
     loop {
-        if rng.gen_range(0, 10) >= 9 && process_no < processes.len() as i32 {
+        if rng.gen_range(0, 100) >= 97 && process_no < processes.len() as i32 {
             queue.push_process(process_no);
             process_no += 1;
+            if process_no % 100 == 0 {
+                //println!("Process no: {}", process_no);
+            }
         }
 
         if queue.size() > 0 {
@@ -54,10 +56,7 @@ fn fcfs(processes: &mut Vec<Process>) -> i32 {
             processed_task.add_time_processed();
             if processed_task.get_time_processed() == processed_task.get_task_time() {
                 queue.remove(0);
-                //println!("Removed item no: {}", first_in_queue);
             }
-
-            //println!("Len of queue: {}", queue.size());
 
             let mut size_of_queue: i32 = queue.size() as i32;
             while size_of_queue != 1 && size_of_queue != 0 {
@@ -66,7 +65,7 @@ fn fcfs(processes: &mut Vec<Process>) -> i32 {
                 size_of_queue -= 1;
             }
 
-            if (processes.len() as i32) == process_no && queue.size() == 0 {
+            if (processes.len() as i32) == process_no && queue.is_empty() {
                 break;
             }
 

@@ -11,13 +11,6 @@ impl Queue {
         self.list.push(process);
     }
 
-    pub fn pop_process(&mut self) {
-        match self.list.pop() {
-            Some(n) => n,
-            None => 0,
-        };
-    }
-
     pub fn is_empty(&self) -> bool {
         self.list.is_empty()
     }
